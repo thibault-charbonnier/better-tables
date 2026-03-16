@@ -3,7 +3,7 @@ import os
 import subprocess
 from html import escape as _std_html_escape
 
-from ..table.table_style import TableStyle
+from ..table_style import TableStyle
 
 @staticmethod
 def _escape_latex(text: str) -> str:
