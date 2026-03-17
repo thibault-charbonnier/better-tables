@@ -1,6 +1,6 @@
 [project]
 name = "better-tables"
-version = "0.1.0"
+version = "0.2.0"
 description = "Minimal pd.DataFrame wrapper to create better tables for LaTeX and HTML."
 readme = "README.md"
 authors = [
