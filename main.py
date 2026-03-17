@@ -243,7 +243,7 @@ def test_multiindex_columns_significance_table():
         note="Used to validate MultiIndex column rendering together with significance handling.",
     )
     return table
- 
+  
 if __name__ == "__main__":
     # Publi
     test_basic_table().to_latex(save_as_pdf=True, path="test_basic_table.pdf")
