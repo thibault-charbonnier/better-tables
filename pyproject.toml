@@ -1,8 +1,11 @@
 [project]
 name = "better-tables"
 version = "0.1.0"
-description = "Add your description here"
+description = "Minimal pd.DataFrame wrapper to create better tables for LaTeX and HTML."
 readme = "README.md"
+authors = [
+    { name = "Thibault Charbonnier", email = "thibault.charbonnier@ensae.fr" }
+]
 requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.0.0,<3.0.0",
