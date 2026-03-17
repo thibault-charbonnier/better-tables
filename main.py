@@ -245,6 +245,7 @@ def test_multiindex_columns_significance_table():
     return table
 
 if __name__ == "__main__":
+    # Publi
     test_basic_table().to_latex(save_as_pdf=True, path="test_basic_table.pdf")
     test_percent_logic_table().to_latex(save_as_pdf=True, path="test_percent_logic_table.pdf")
     test_significance_flat_table().to_latex(save_as_pdf=True, path="test_significance_flat_table.pdf")
