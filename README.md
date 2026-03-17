@@ -13,7 +13,7 @@ A lightweight Python package to render pandas DataFrames into clean **LaTeX** an
 
 - **Style and formatting focused:** flexible formatting rules and advanced styling options for precise rendering control
 
-![Intro-Table](static/intro-table.png)
+![Intro-Table](https://raw.githubusercontent.com/thibault-charbonnier/better-tables/master/static/intro-table.png)
 
 ---
 
@@ -170,7 +170,7 @@ Notes:
 - if `significance_stat="stderr"` or `"tstat"`, the auxiliary statistic is shown in parentheses but no stars are added
 - if `significance_stat=None`, no merging is performed
 
-![Significance table](static/significance-table.png)
+![Significance table](https://raw.githubusercontent.com/thibault-charbonnier/better-tables/master/static/significance-table.png)
 
 ---
 
@@ -183,13 +183,13 @@ MultiIndex handling is supported natively, without any additional parameters.
 A row `MultiIndex` is rendered as multiple stub columns on the left, with repeated labels displayed sparsely.
 
 
-![Row MultiIndex table](static/row-multiindex.png)
+![Row MultiIndex table](https://raw.githubusercontent.com/thibault-charbonnier/better-tables/master/static/row-multiindex.png)
 
 #### Column MultiIndex
 
 A column `MultiIndex` is rendered as a grouped multi-level header.
 
-![Column MultiIndex table](static/column-multiindex.png)
+![Column MultiIndex table](https://raw.githubusercontent.com/thibault-charbonnier/better-tables/master/static/column-multiindex.png)
 
 ---
 
