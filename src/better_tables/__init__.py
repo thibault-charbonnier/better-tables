@@ -35,6 +35,7 @@ def build_table(
     format_axis: Literal["rows", "columns"] = "rows",
     note: str | None = None,
     style_options: Mapping[str, Any] | None = None,
+    separator_before_rows: list[Any] | None = None,
     highlight_mode: Literal["max", "min"] | None = None,
     highlight_axis: Literal["rows", "columns"] = "rows",
     default_format: MetricFormatLike | None = MetricFormat(kind="number", decimals=2),
@@ -96,6 +97,9 @@ def build_table(
     style_options : mapping or None, default None
         Optional overrides applied on top of the base style resolved
         from `style`. Keys correspond to fields of `TableStyle`.
+    separator_before_rows : list or None, default None
+        Optional list of row labels before which a horizontal separator line
+        should be rendered. Row labels refer to the index of `data`.
     highlight_mode : {'max', 'min'} or None, default None
         If not None, enables automatic highlighting of the maximum or
         minimum value in each row or column (depending on `format_axis`).
@@ -164,6 +168,7 @@ def build_table(
         format_axis=format_axis,
         note=note,
         style_options=style_options,
+        separator_before_rows=separator_before_rows,
         highlight_mode=highlight_mode,
         highlight_axis=highlight_axis,
         default_format=default_format,

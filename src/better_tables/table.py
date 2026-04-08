@@ -91,6 +91,9 @@ class ReportTable:
     style_options : mapping or None, default None
         Optional overrides applied on top of the base style resolved
         from `style`. Keys correspond to fields of `TableStyle`.
+    separator_before_rows : list or None, default None
+        Optional list of row labels before which a horizontal separator line
+        should be rendered. Row labels refer to the index of `data`.
     highlight_mode : {'max', 'min'} or None, default None
         If not None, enables automatic highlighting of the maximum or
         minimum value in each row or column (depending on `format_axis`).
@@ -143,6 +146,7 @@ class ReportTable:
     format_axis: Literal["rows", "columns"] = "rows"
     note: str | None = None
     style_options: Mapping[str, Any] | None = None
+    separator_before_rows: list[Any] | None = None
     highlight_mode: Literal["max", "min"] | None = None
     highlight_axis: Literal["rows", "columns"] = "rows"
     default_format: MetricFormatLike | None = None
@@ -166,6 +170,7 @@ class ReportTable:
         format_axis: Literal["rows", "columns"] = "rows",
         note: str | None = None,
         style_options: Mapping[str, Any] | None = None,
+        separator_before_rows: list[Any] | None = None,
         highlight_mode: Literal["max", "min"] | None = None,
         highlight_axis: Literal["rows", "columns"] = "rows",
         default_format: MetricFormatLike | None = MetricFormat(kind="number", decimals=2),
@@ -206,6 +211,7 @@ class ReportTable:
             format_axis=format_axis,
             style_options=style_options,
             note=note,
+            separator_before_rows=separator_before_rows,
             highlight_mode=highlight_mode,
             highlight_axis=highlight_axis,
             default_format=normalized_default_format,
@@ -717,6 +723,21 @@ class ReportTable:
 
         return MetricFormat(kind="number", decimals=3).format(v)
 
+    def _has_meaningful_aux_value(self, value: Any) -> bool:
+        """
+        Return True if the auxiliary significance value should actually be rendered.
+        """
+        if value is None:
+            return False
+
+        if pd.isna(value):
+            return False
+
+        if isinstance(value, str) and value.strip() == "":
+            return False
+
+        return True
+
     def _build_formatted_frame(self, display_data: pd.DataFrame | None = None, display_aux: dict[Any, pd.Series] | None = None) -> pd.DataFrame:
         """
         Build a fully formatted DataFrame of strings.
@@ -757,13 +778,17 @@ class ReportTable:
 
                 if col_label in display_aux:
                     aux_raw = display_aux[col_label].loc[row_label]
-                    aux_text = self._format_aux_value(aux_raw)
-                    stars = self._format_significance_stars(aux_raw)
 
-                    if self.significance_layout == "stack":
-                        text = f"{main_text}{stars}\n({aux_text})"
+                    if self._has_meaningful_aux_value(aux_raw):
+                        aux_text = self._format_aux_value(aux_raw)
+                        stars = self._format_significance_stars(aux_raw)
+
+                        if self.significance_layout == "stack":
+                            text = f"{main_text}{stars}\n({aux_text})"
+                        else:
+                            text = f"{main_text}{stars} ({aux_text})"
                     else:
-                        text = f"{main_text}{stars} ({aux_text})"
+                        text = main_text
                 else:
                     text = main_text
 
@@ -928,7 +953,12 @@ class ReportTable:
             lines.append(r"\hline")
 
         n_rows = len(formatted.index)
+        separator_rows = set(self.separator_before_rows or [])
+
         for i, idx in enumerate(formatted.index):
+            if idx in separator_rows and i > 0:
+                lines.append(r"\hline")
+
             row_cells: list[str] = []
 
             for stub_col in stub.columns:
@@ -1049,8 +1079,13 @@ class ReportTable:
         tbody_lines.append("<tbody>")
 
         n_rows = len(formatted.index)
+        separator_rows = set(self.separator_before_rows or [])
+
         for i, idx in enumerate(formatted.index):
             row_classes: list[str] = []
+
+            if idx in separator_rows and i > 0:
+                row_classes.append("br-row-section-start")
             if s.zebra_striping:
                 row_classes.append("br-row-even" if i % 2 == 0 else "br-row-odd")
             if s.last_row_emphasis and i == n_rows - 1:
